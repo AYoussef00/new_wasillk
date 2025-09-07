@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\BookingRequest;
 use App\Models\Booking;
 use App\Models\Car;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,9 +38,16 @@ class BookingController extends Controller
                 $licenseImagePath = $request->file('license_image')->store('bookings/license_images', 'public');
             }
 
+            // الحصول على admin user إذا لم يكن المستخدم مسجل دخول
+            $userId = Auth::id();
+            if (!$userId) {
+                $adminUser = User::where('email', 'info@wasillk.com')->first();
+                $userId = $adminUser ? $adminUser->id : 1; // استخدام ID 1 كبديل
+            }
+
             // إنشاء الحجز
             $booking = Booking::create([
-                'user_id' => Auth::id(), // null للزوار
+                'user_id' => $userId,
                 'car_id' => $car->id,
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
