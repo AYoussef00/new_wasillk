@@ -23,6 +23,14 @@ class BookingSeeder extends Seeder
             return;
         }
 
+        if ($users->isEmpty()) {
+            $this->command->warn('No users found. Please run AdminUserSeeder first.');
+            return;
+        }
+
+        // Get the first user (admin user)
+        $adminUser = $users->first();
+
         // Sample bookings with images
         $bookings = [
             [
@@ -37,7 +45,7 @@ class BookingSeeder extends Seeder
                 'id_image' => '/storage/sample/id_card_1.jpg',
                 'license_image' => '/storage/sample/license_1.jpg',
                 'car_id' => $cars->first()->id,
-                'user_id' => $users->first()->id ?? null,
+                'user_id' => $adminUser->id,
             ],
             [
                 'customer_name' => 'فاطمة أحمد',
@@ -51,7 +59,7 @@ class BookingSeeder extends Seeder
                 'id_image' => '/storage/sample/id_card_2.jpg',
                 'license_image' => null,
                 'car_id' => $cars->count() > 1 ? $cars->get(1)->id : $cars->first()->id,
-                'user_id' => null, // Guest booking
+                'user_id' => $adminUser->id,
             ],
             [
                 'customer_name' => 'محمد عبدالله',
@@ -65,7 +73,7 @@ class BookingSeeder extends Seeder
                 'id_image' => null,
                 'license_image' => '/storage/sample/license_3.jpg',
                 'car_id' => $cars->count() > 2 ? $cars->get(2)->id : $cars->first()->id,
-                'user_id' => null, // Guest booking
+                'user_id' => $adminUser->id,
             ],
         ];
 
