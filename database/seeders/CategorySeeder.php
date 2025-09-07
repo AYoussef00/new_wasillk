@@ -64,7 +64,12 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            // Check if category with this name already exists
+            $existingCategory = Category::where('name_ar', $category['name_ar'])->first();
+            
+            if (!$existingCategory) {
+                Category::create($category);
+            }
         }
     }
 }

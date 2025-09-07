@@ -213,7 +213,12 @@ class CarSeeder extends Seeder
         ];
 
         foreach ($cars as $car) {
-            Car::create($car);
+            // Check if car with this license plate already exists
+            $existingCar = Car::where('license_plate', $car['license_plate'])->first();
+            
+            if (!$existingCar) {
+                Car::create($car);
+            }
         }
     }
 }
