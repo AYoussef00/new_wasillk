@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
     {
         // Check if admin user already exists
         $adminUser = User::where('email', 'info@wasillk.com')->first();
-        
+
         if (!$adminUser) {
             User::create([
                 'name' => 'Admin',
@@ -33,7 +33,7 @@ class AdminUserSeeder extends Seeder
         } else {
             $this->command->info('Admin user already exists!');
         }
-        
+
         $this->command->info('Email: info@wasillk.com');
         $this->command->info('Password: password123');
     }

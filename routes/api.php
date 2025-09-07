@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,24 @@ Route::prefix('cars')->group(function () {
 
     // Get available filters
     Route::get('/filters/available', [CarController::class, 'filters']);
+});
+
+// Booking API Routes
+Route::prefix('bookings')->group(function () {
+    // Get user bookings (requires authentication or phone number)
+    Route::get('/', [BookingController::class, 'index']);
+    
+    // Get specific booking details
+    Route::get('/{booking}', [BookingController::class, 'show']);
+    
+    // Cancel booking
+    Route::patch('/{booking}/cancel', [BookingController::class, 'cancel']);
+});
+
+// Car booking routes
+Route::prefix('cars')->group(function () {
+    // Create booking for specific car
+    Route::post('/{car}/book', [BookingController::class, 'store']);
 });
 
 
