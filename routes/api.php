@@ -64,13 +64,13 @@ Route::prefix('cars')->group(function () {
 Route::prefix('settings')->group(function () {
     // Get policies and terms
     Route::get('/policies', [SettingsController::class, 'getPolicies']);
-    
+
     // Get location information
     Route::get('/location', [SettingsController::class, 'getLocation']);
-    
+
     // Get titles (main title and sub title)
     Route::get('/titles', [SettingsController::class, 'getTitles']);
-    
+
     // Get contact information
     Route::get('/contact', [SettingsController::class, 'getContactInfo']);
 });
