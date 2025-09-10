@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,10 +46,10 @@ Route::prefix('cars')->group(function () {
 Route::prefix('bookings')->group(function () {
     // Get user bookings (requires authentication or phone number)
     Route::get('/', [BookingController::class, 'index']);
-    
+
     // Get specific booking details
     Route::get('/{booking}', [BookingController::class, 'show']);
-    
+
     // Cancel booking
     Route::patch('/{booking}/cancel', [BookingController::class, 'cancel']);
 });
@@ -57,6 +58,21 @@ Route::prefix('bookings')->group(function () {
 Route::prefix('cars')->group(function () {
     // Create booking for specific car
     Route::post('/{car}/book', [BookingController::class, 'store']);
+});
+
+// Settings API Routes
+Route::prefix('settings')->group(function () {
+    // Get policies and terms
+    Route::get('/policies', [SettingsController::class, 'getPolicies']);
+    
+    // Get location information
+    Route::get('/location', [SettingsController::class, 'getLocation']);
+    
+    // Get titles (main title and sub title)
+    Route::get('/titles', [SettingsController::class, 'getTitles']);
+    
+    // Get contact information
+    Route::get('/contact', [SettingsController::class, 'getContactInfo']);
 });
 
 

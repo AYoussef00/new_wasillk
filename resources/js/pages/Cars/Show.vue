@@ -187,7 +187,7 @@
 
               <!-- WhatsApp Button -->
               <a
-                href="https://wa.me/966501234567?text=مرحبا، أريد الاستفسار عن سيارة {{ car.brand_ar || 'تويوتا' }} {{ car.model_ar || 'كورولا' }}"
+                :href="`https://wa.me/${contactInfo.whatsapp.replace(/\s/g, '')}?text=مرحبا، أريد الاستفسار عن سيارة ${car.brand_ar || 'تويوتا'} ${car.model_ar || 'كورولا'}`"
                 target="_blank"
                 class="block w-full bg-gradient-to-r from-green-500 to-green-600 text-white text-center py-3 px-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-3"
               >
@@ -202,7 +202,7 @@
               <!-- Phone Number -->
               <div class="flex items-center justify-center space-x-2 space-x-reverse text-sm">
                 <Phone class="w-4 h-4 text-blue-600" />
-                <span class="text-blue-600 font-semibold">+966 50 123 4567</span>
+                <span class="text-blue-600 font-semibold">{{ contactInfo.phone }}</span>
               </div>
             </div>
 
@@ -347,82 +347,91 @@
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-2">التأمين الشامل</h3>
             </div>
-            <div class="space-y-3 text-sm text-gray-600">
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>تأمين شامل ضد الحوادث</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>تأمين ضد السرقة</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>تأمين ضد الأضرار الطبيعية</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>تأمين المسؤولية المدنية</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Privacy Policy -->
-          <div class="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
-            <div class="text-center mb-6">
-              <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">سياسة الخصوصية</h3>
-            </div>
-            <div class="space-y-3 text-sm text-gray-600">
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>حماية كاملة لبياناتك الشخصية</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>عدم مشاركة المعلومات مع أطراف ثالثة</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>تشفير آمن لجميع البيانات</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>حقك في حذف بياناتك في أي وقت</span>
+            <div class="text-sm text-gray-600 leading-relaxed">
+              <p v-if="insuranceInfo" class="whitespace-pre-line">{{ insuranceInfo }}</p>
+              <div v-else class="space-y-3">
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تأمين شامل ضد الحوادث</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تأمين ضد السرقة</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تأمين ضد الأضرار الطبيعية</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تأمين المسؤولية المدنية</span>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Cancellation Policy -->
-          <div class="bg-white rounded-2xl shadow-xl p-8 border border-orange-100">
+          <div class="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
             <div class="text-center mb-6">
-              <div class="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-2">سياسة الإلغاء</h3>
             </div>
-            <div class="space-y-3 text-sm text-gray-600">
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>إلغاء مجاني قبل 24 ساعة</span>
+            <div class="text-sm text-gray-600 leading-relaxed">
+              <p v-if="cancellationPolicy" class="whitespace-pre-line">{{ cancellationPolicy }}</p>
+              <div v-else class="space-y-3">
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>إلغاء مجاني قبل 24 ساعة</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>استرداد 50% قبل 12 ساعة</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>لا يمكن الإلغاء قبل 6 ساعات</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>إلغاء فوري في حالة الطوارئ</span>
+                </div>
               </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>استرداد 50% قبل 12 ساعة</span>
+            </div>
+          </div>
+
+          <!-- Rental Terms -->
+          <div class="bg-white rounded-2xl shadow-xl p-8 border border-green-100">
+            <div class="text-center mb-6">
+              <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
               </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>لا يمكن الإلغاء قبل 6 ساعات</span>
-              </div>
-              <div class="flex items-start space-x-2 space-x-reverse">
-                <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span>إلغاء فوري في حالة الطوارئ</span>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">شروط الإيجار</h3>
+            </div>
+            <div class="text-sm text-gray-600 leading-relaxed">
+              <p v-if="rentalTerms" class="whitespace-pre-line">{{ rentalTerms }}</p>
+              <div v-else class="space-y-3">
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>يجب أن يكون عمر المستأجر 21 سنة أو أكثر</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تقديم رخصة قيادة سارية المفعول</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>تقديم هوية شخصية</span>
+                </div>
+                <div class="flex items-start space-x-2 space-x-reverse">
+                  <Check class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>ممنوع التدخين في السيارة</span>
+                </div>
               </div>
             </div>
           </div>
@@ -452,8 +461,8 @@
               </div>
               <div class="text-center">
                 <p class="font-semibold text-gray-900 mb-2">الهاتف:</p>
-                <a href="tel:+966501234567" class="text-blue-600 hover:text-blue-700 font-medium">
-                  +966 50 123 4567
+                <a :href="`tel:${contactInfo.phone.replace(/\s/g, '')}`" class="text-blue-600 hover:text-blue-700 font-medium">
+                  {{ contactInfo.phone }}
                 </a>
               </div>
             </div>
@@ -540,7 +549,7 @@
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <!-- WhatsApp Button -->
           <a
-            href="https://wa.me/966501234567?text=مرحبا، أريد الاستفسار عن سيارة {{ car.full_name }}"
+            :href="`https://wa.me/${contactInfo.whatsapp.replace(/\s/g, '')}?text=مرحبا، أريد الاستفسار عن سيارة ${car.brand_ar || 'تويوتا'} ${car.model_ar || 'كورولا'}`"
             target="_blank"
             class="bg-green-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-600 transition duration-300 flex items-center space-x-2 space-x-reverse"
           >
@@ -552,7 +561,7 @@
 
           <!-- Phone Button -->
           <a
-            href="tel:+966501234567"
+            :href="`tel:${contactInfo.phone.replace(/\s/g, '')}`"
             class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition duration-300 flex items-center space-x-2 space-x-reverse"
           >
             <Phone class="w-6 h-6" />
@@ -561,7 +570,7 @@
         </div>
 
         <div class="mt-6 text-blue-100">
-          <p>أو راسلنا على: <span class="font-semibold">+966 50 123 4567</span></p>
+          <p>أو راسلنا على: <span class="font-semibold">{{ contactInfo.phone }}</span></p>
         </div>
       </div>
     </section>
@@ -569,7 +578,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import Header from '../../components/Header.vue'
 import {
@@ -591,12 +600,60 @@ const props = defineProps({
 
 const selectedImage = ref(props.car.images?.[0] || null)
 const activeTab = ref('description')
+const insuranceInfo = ref('')
+const cancellationPolicy = ref('')
+const rentalTerms = ref('')
+const contactInfo = ref({
+  phone: '+966 55 8588 097',
+  whatsapp: '+966 55 8588 097'
+})
 
 const tabs = [
   { id: 'description', name: 'الوصف' },
   { id: 'features', name: 'المميزات' },
   { id: 'specifications', name: 'المواصفات' },
 ]
+
+const fetchPoliciesInfo = async () => {
+  try {
+    const response = await fetch('/api/settings/policies')
+    const data = await response.json()
+    if (data.success) {
+      insuranceInfo.value = data.data.insurance_info || 'جميع السيارات مؤمنة بالكامل'
+      cancellationPolicy.value = data.data.cancellation_policy || 'يمكن إلغاء الحجز قبل 24 ساعة من تاريخ الاستلام'
+      rentalTerms.value = data.data.rental_terms || 'يجب أن يكون عمر المستأجر 21 سنة أو أكثر'
+    }
+  } catch (error) {
+    console.error('Error fetching policies info:', error)
+    insuranceInfo.value = 'جميع السيارات مؤمنة بالكامل'
+    cancellationPolicy.value = 'يمكن إلغاء الحجز قبل 24 ساعة من تاريخ الاستلام'
+    rentalTerms.value = 'يجب أن يكون عمر المستأجر 21 سنة أو أكثر'
+  }
+}
+
+const fetchContactInfo = async () => {
+  try {
+    const response = await fetch('/api/settings/contact')
+    const data = await response.json()
+    if (data.success) {
+      contactInfo.value = {
+        phone: data.data.phone || '+966 55 8588 097',
+        whatsapp: data.data.whatsapp || '+966 55 8588 097'
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching contact info:', error)
+    contactInfo.value = {
+      phone: '+966 55 8588 097',
+      whatsapp: '+966 55 8588 097'
+    }
+  }
+}
+
+onMounted(() => {
+  fetchPoliciesInfo()
+  fetchContactInfo()
+})
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat('ar-SA').format(price)

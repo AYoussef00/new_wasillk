@@ -315,4 +315,42 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'حدث خطأ أثناء إضافة السيارة: ' . $e->getMessage());
         }
     }
+
+    public function destroyCar($id)
+    {
+        try {
+            $car = Car::findOrFail($id);
+
+            // Check if car has any bookings
+            $hasBookings = Booking::where('car_id', $id)->exists();
+
+            if ($hasBookings) {
+                return redirect()->back()->with('error', 'لا يمكن حذف هذه السيارة لأنها مرتبطة بحجوزات موجودة.');
+            }
+
+            // Delete car images from storage
+            if ($car->images) {
+                $images = is_string($car->images) ? json_decode($car->images, true) : $car->images;
+                if (is_array($images)) {
+                    foreach ($images as $image) {
+                        $imagePath = str_replace('/storage/', '', $image);
+                        if (file_exists(storage_path('app/public/' . $imagePath))) {
+                            unlink(storage_path('app/public/' . $imagePath));
+                        }
+                    }
+                }
+            }
+
+            $car->delete();
+
+            return redirect()->back()->with('success', 'تم حذف السيارة بنجاح.');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error deleting car:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->with('error', 'حدث خطأ أثناء حذف السيارة: ' . $e->getMessage());
+        }
+    }
 }

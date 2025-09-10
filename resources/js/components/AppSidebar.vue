@@ -5,14 +5,14 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Car } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, Car, Settings, Home, Calendar, Cog } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'لوحة التحكم',
         href: dashboard(),
-        icon: LayoutGrid,
+        icon: Home,
     },
     {
         title: 'السيارات',
@@ -22,43 +22,44 @@ const mainNavItems: NavItem[] = [
     {
         title: 'الطلبات',
         href: '/dashboard/bookings',
-        icon: BookOpen,
+        icon: Calendar,
+    },
+    {
+        title: 'الإعدادات',
+        href: '/dashboard/settings',
+        icon: Cog,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
+        title: 'الدعم الفني',
+        href: '/contact',
         icon: BookOpen,
     },
 ];
 </script>
 
 <template>
-    <Sidebar collapsible="icon" variant="inset">
-        <SidebarHeader>
+    <Sidebar collapsible="icon" variant="inset" side="right" class="border-l border-sidebar-border/50 shadow-lg">
+        <SidebarHeader class="border-b border-sidebar-border/50 p-4">
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                    <SidebarMenuButton size="lg" as-child class="hover:bg-transparent">
+                        <Link :href="dashboard()" class="flex items-center gap-3">
                             <AppLogo />
+                            <span class="font-bold text-lg text-sidebar-foreground">واصل لك</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent class="p-2">
             <NavMain :items="mainNavItems" />
         </SidebarContent>
 
-        <SidebarFooter>
+        <SidebarFooter class="border-t border-sidebar-border/50 p-2">
             <NavFooter :items="footerNavItems" />
         </SidebarFooter>
     </Sidebar>

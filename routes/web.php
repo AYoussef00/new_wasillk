@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
             Route::get('/dashboard/cars', [DashboardController::class, 'cars'])->name('dashboard.cars');
         Route::post('/dashboard/cars', [DashboardController::class, 'storeCar'])->name('dashboard.cars.store');
+        Route::delete('/dashboard/cars/{id}', [DashboardController::class, 'destroyCar'])->name('dashboard.cars.destroy');
         Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
         Route::post('/dashboard/bookings/{id}/confirm', [DashboardController::class, 'confirmBooking'])->name('dashboard.bookings.confirm');
         Route::post('/dashboard/bookings/{id}/reject', [DashboardController::class, 'rejectBooking'])->name('dashboard.bookings.reject');
@@ -68,6 +70,11 @@ Route::get('/storage/{path}', function($path) {
 
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::patch('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // Settings routes
+    Route::get('/dashboard/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/dashboard/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/dashboard/settings', [SettingsController::class, 'update'])->name('settings.update.post');
 });
 
 require __DIR__.'/auth.php';

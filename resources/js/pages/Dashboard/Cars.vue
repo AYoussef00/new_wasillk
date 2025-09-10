@@ -1,153 +1,155 @@
 <template>
   <Head title="السيارات - لوحة التحكم" />
 
-  <AuthenticatedLayout>
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        إدارة السيارات
-      </h2>
-    </template>
-
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Flash Messages -->
-        <div v-if="success" class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-          {{ success }}
-        </div>
-        <div v-if="error" class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {{ error }}
-        </div>
-
-        <!-- Header with Add Button -->
-        <div class="mb-6 flex justify-between items-center">
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900">جميع السيارات</h3>
-            <p class="text-sm text-gray-600">إدارة وتعديل السيارات في النظام</p>
-          </div>
-          <button
-            @click="showAddCarModal = true"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+  <AppLayout>
+    <div class="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-6">
+      <!-- Welcome Section -->
+      <div class="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl p-6 text-white">
+        <h1 class="text-2xl font-bold mb-2">إدارة السيارات</h1>
+        <p class="text-green-100">إدارة وتعديل السيارات في النظام</p>
+      </div>
+      <!-- Flash Messages -->
+      <div v-if="success" class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
             </svg>
-            إضافة سيارة جديدة
-          </button>
-        </div>
-
-        <!-- Filters -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-          <div class="p-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">البحث</label>
-                <input
-                  v-model="search"
-                  type="text"
-                  placeholder="البحث في السيارات..."
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">الفئة</label>
-                <select
-                  v-model="selectedCategory"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">جميع الفئات</option>
-                  <option v-for="category in categories" :key="category.id" :value="category.id">
-                    {{ category.name }}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">الحالة</label>
-                <select
-                  v-model="selectedStatus"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">جميع الحالات</option>
-                  <option value="متاحة">متاحة</option>
-                  <option value="مستأجرة">مستأجرة</option>
-                  <option value="في الصيانة">في الصيانة</option>
-                  <option value="غير متاحة">غير متاحة</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">النوع</label>
-                <select
-                  v-model="selectedType"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">جميع الأنواع</option>
-                  <option value="featured">مميزة</option>
-                  <option value="regular">عادية</option>
-                </select>
-              </div>
-            </div>
+          </div>
+          <div class="mr-3">
+            <p class="text-sm font-medium text-green-800">{{ success }}</p>
           </div>
         </div>
+      </div>
+      <div v-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="mr-3">
+            <p class="text-sm font-medium text-red-800">{{ error }}</p>
+          </div>
+        </div>
+      </div>
 
-        <!-- Cars Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            v-for="car in filteredCars"
-            :key="car.id"
-            class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow"
-          >
-            <!-- Car Image Placeholder -->
-            <div class="h-48 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
-              <svg class="w-16 h-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-              </svg>
+      <!-- Header with Add Button -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">جميع السيارات</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">إدارة وتعديل السيارات في النظام</p>
+        </div>
+        <button
+          @click="showAddCarModal = true"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          إضافة سيارة جديدة
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">البحث</label>
+            <input
+              v-model="search"
+              type="text"
+              placeholder="البحث في السيارات..."
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">الحالة</label>
+            <select
+              v-model="selectedStatus"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              <option value="">جميع الحالات</option>
+              <option value="متاحة">متاحة</option>
+              <option value="مستأجرة">مستأجرة</option>
+              <option value="في الصيانة">في الصيانة</option>
+              <option value="غير متاحة">غير متاحة</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">النوع</label>
+            <select
+              v-model="selectedType"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              <option value="">جميع الأنواع</option>
+              <option value="featured">مميزة</option>
+              <option value="regular">عادية</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cars Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          v-for="car in filteredCars"
+          :key="car.id"
+          class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+        >
+          <!-- Car Image Placeholder -->
+          <div class="h-48 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 flex items-center justify-center">
+            <svg class="w-16 h-16 text-blue-400 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+          </div>
+
+          <!-- Car Info -->
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ car.name }}</h3>
+              <div class="flex space-x-1 space-x-reverse">
+                <span v-if="car.is_featured" class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-1 rounded-full">مميزة</span>
+                <span :class="getStatusClass(car.status)" class="text-xs px-2 py-1 rounded-full">
+                  {{ car.status }}
+                </span>
+              </div>
             </div>
 
-            <!-- Car Info -->
-            <div class="p-6">
-              <div class="flex justify-between items-start mb-3">
-                <h3 class="text-lg font-semibold text-gray-900">{{ car.name }}</h3>
-                <div class="flex space-x-1 space-x-reverse">
-                  <span v-if="car.is_featured" class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">مميزة</span>
-                  <span :class="getStatusClass(car.status)" class="text-xs px-2 py-1 rounded-full">
-                    {{ car.status }}
-                  </span>
-                </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">الفئة:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.category }}</span>
               </div>
-
-              <div class="space-y-2 mb-4">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">الفئة:</span>
-                  <span class="text-gray-900">{{ car.category }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">رقم اللوحة:</span>
-                  <span class="text-gray-900 font-mono">{{ car.license_plate }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">السعر اليومي:</span>
-                  <span class="text-green-600 font-bold">{{ car.daily_rate }} ريال</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">السنة:</span>
-                  <span class="text-gray-900">{{ car.year }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">اللون:</span>
-                  <span class="text-gray-900">{{ car.color }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">الناقل:</span>
-                  <span class="text-gray-900">{{ car.transmission }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">الوقود:</span>
-                  <span class="text-gray-900">{{ car.fuel_type }}</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-600">المقاعد:</span>
-                  <span class="text-gray-900">{{ car.seats }}</span>
-                </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">رقم اللوحة:</span>
+                <span class="text-gray-900 dark:text-white font-mono">{{ car.license_plate }}</span>
               </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">السعر اليومي:</span>
+                <span class="text-green-600 dark:text-green-400 font-bold">{{ car.daily_rate }} ريال</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">السنة:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.year }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">اللون:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.color }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">الناقل:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.transmission }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">الوقود:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.fuel_type }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">المقاعد:</span>
+                <span class="text-gray-900 dark:text-white">{{ car.seats }}</span>
+              </div>
+            </div>
 
               <!-- Action Buttons -->
               <div class="flex space-x-2 space-x-reverse">
@@ -157,7 +159,11 @@
                 <button class="flex-1 bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700 transition-colors">
                   عرض
                 </button>
-                <button class="bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700 transition-colors">
+                <button
+                  @click="deleteCar(car.id)"
+                  class="bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700 transition-colors"
+                  title="حذف السيارة"
+                >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
@@ -167,14 +173,13 @@
           </div>
         </div>
 
-        <!-- Empty State -->
-        <div v-if="filteredCars.length === 0" class="text-center py-12">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-          </svg>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">لا توجد سيارات</h3>
-          <p class="text-gray-500">لم يتم العثور على سيارات تطابق معايير البحث</p>
-        </div>
+      <!-- Empty State -->
+      <div v-if="filteredCars.length === 0" class="text-center py-12">
+        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">لا توجد سيارات</h3>
+        <p class="text-gray-500 dark:text-gray-400">لم يتم العثور على سيارات تطابق معايير البحث</p>
       </div>
     </div>
 
@@ -487,12 +492,12 @@
         </form>
       </div>
     </div>
-  </AuthenticatedLayout>
+  </AppLayout>
 </template>
 
 <script setup>
 import { Head, router } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { ref, computed } from 'vue'
 
 const props = defineProps({
@@ -503,7 +508,6 @@ const props = defineProps({
 })
 
 const search = ref('')
-const selectedCategory = ref('')
 const selectedStatus = ref('')
 const selectedType = ref('')
 
@@ -543,9 +547,6 @@ const filteredCars = computed(() => {
       car.name.toLowerCase().includes(search.value.toLowerCase()) ||
       car.license_plate.toLowerCase().includes(search.value.toLowerCase())
 
-    const matchesCategory = !selectedCategory.value ||
-      car.category === selectedCategory.value
-
     const matchesStatus = !selectedStatus.value ||
       car.status === selectedStatus.value
 
@@ -553,7 +554,7 @@ const filteredCars = computed(() => {
       (selectedType.value === 'featured' && car.is_featured) ||
       (selectedType.value === 'regular' && !car.is_featured)
 
-    return matchesSearch && matchesCategory && matchesStatus && matchesType
+    return matchesSearch && matchesStatus && matchesType
   })
 })
 
@@ -608,6 +609,30 @@ const handleMainImageUpload = (event) => {
 
 const handleSecondaryImageUpload = (event) => {
   carForm.value.secondary_image = event.target.files[0]
+}
+
+const deleteCar = (carId) => {
+  if (confirm('هل أنت متأكد من حذف هذه السيارة؟ لا يمكن التراجع عن هذا الإجراء.')) {
+    router.delete(`/dashboard/cars/${carId}`, {
+      onSuccess: () => {
+        console.log('Car deleted successfully')
+        // Refresh the page to show updated cars list
+        window.location.reload()
+      },
+      onError: (errors) => {
+        console.error('Error deleting car:', errors)
+        let errorMessage = 'حدث خطأ أثناء حذف السيارة: '
+        if (typeof errors === 'object') {
+          Object.keys(errors).forEach(key => {
+            errorMessage += '\n' + key + ': ' + errors[key]
+          })
+        } else {
+          errorMessage += errors
+        }
+        alert(errorMessage)
+      }
+    })
+  }
 }
 
 const submitCarForm = () => {

@@ -1,177 +1,108 @@
 <template>
   <Head title="لوحة التحكم" />
 
-  <AuthenticatedLayout>
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        لوحة التحكم
-      </h2>
-    </template>
-
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-              <div class="flex items-center">
-                <div class="bg-blue-100 rounded-full p-3 mr-4">
-                  <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-600">إجمالي السيارات</p>
-                  <p class="text-2xl font-bold text-gray-900">{{ stats.total_cars }}</p>
-                </div>
-              </div>
+  <AppLayout>
+    <div class="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-6">
+      <!-- Welcome Section -->
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+        <h1 class="text-2xl font-bold mb-2">مرحباً بك في لوحة التحكم</h1>
+        <p class="text-blue-100">إدارة شاملة لنظام حجز السيارات</p>
+      </div>
+      <!-- Stats Cards -->
+      <div class="grid auto-rows-min gap-6 md:grid-cols-3">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-400">إجمالي السيارات</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.total_cars }}</p>
             </div>
-          </div>
-
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-              <div class="flex items-center">
-                <div class="bg-green-100 rounded-full p-3 mr-4">
-                  <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-600">السيارات المتاحة</p>
-                  <p class="text-2xl font-bold text-gray-900">{{ stats.available_cars }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-              <div class="flex items-center">
-                <div class="bg-purple-100 rounded-full p-3 mr-4">
-                  <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-600">إجمالي الحجوزات</p>
-                  <p class="text-2xl font-bold text-gray-900">{{ stats.total_bookings }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-              <div class="flex items-center">
-                <div class="bg-orange-100 rounded-full p-3 mr-4">
-                  <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-600">في الانتظار</p>
-                  <p class="text-2xl font-bold text-gray-900">{{ stats.pending_bookings }}</p>
-                </div>
-              </div>
+            <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-3">
+              <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+              </svg>
             </div>
           </div>
         </div>
 
-        <!-- Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Recent Bookings -->
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 border-b border-gray-200">
-              <h3 class="text-lg font-semibold text-gray-900">أحدث الحجوزات</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-400">الحجوزات النشطة</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.confirmed_bookings }}</p>
             </div>
-            <div class="p-6">
+            <div class="bg-green-100 dark:bg-green-900 rounded-full p-3">
+              <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-400">في الانتظار</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.pending_bookings }}</p>
+            </div>
+            <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-3">
+              <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">نظرة عامة</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">أحدث الحجوزات</h3>
+            <div class="space-y-3">
               <div v-if="recent_bookings.length === 0" class="text-center py-8">
                 <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                 </svg>
                 <p class="text-gray-500">لا توجد حجوزات حديثة</p>
               </div>
-              <div v-else class="space-y-4">
-                <div v-for="booking in recent_bookings" :key="booking.id" class="border border-gray-200 rounded-lg p-4">
-                  <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-semibold text-gray-900">{{ booking.customer_name }}</h4>
-                    <span class="text-sm text-gray-500">{{ booking.created_at }}</span>
+              <div v-else>
+                <div v-for="booking in recent_bookings" :key="booking.id" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="text-sm text-gray-900 dark:text-white">{{ booking.customer_name }} - {{ booking.car_name }}</span>
                   </div>
-                  <p class="text-gray-600 mb-2">{{ booking.car_name }}</p>
-                  <div class="flex justify-between items-center">
-                    <div class="text-sm text-gray-500">
-                      {{ booking.pickup_date }} - {{ booking.return_date }}
-                    </div>
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                      <span class="text-lg font-bold text-blue-600">{{ booking.total_amount }} ريال</span>
-                      <span class="px-2 py-1 text-xs rounded-full" :class="getStatusClass(booking.status)">
-                        {{ booking.status }}
-                      </span>
-                    </div>
-                  </div>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">{{ booking.created_at }}</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Available Cars -->
-          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 border-b border-gray-200">
-              <h3 class="text-lg font-semibold text-gray-900">السيارات المتاحة</h3>
-            </div>
-            <div class="p-6">
+          <div class="space-y-4">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">السيارات المتاحة</h3>
+            <div class="space-y-3">
               <div v-if="available_cars.length === 0" class="text-center py-8">
                 <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                 </svg>
                 <p class="text-gray-500">لا توجد سيارات متاحة</p>
               </div>
-              <div v-else class="space-y-4">
-                <div v-for="car in available_cars" :key="car.id" class="border border-gray-200 rounded-lg p-4">
-                  <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-semibold text-gray-900">{{ car.name }}</h4>
-                    <span v-if="car.is_featured" class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">مميزة</span>
-                  </div>
-                  <p class="text-gray-600 mb-2">{{ car.category }}</p>
-                  <div class="flex justify-between items-center">
-                    <div class="text-sm text-gray-500">
-                      {{ car.license_plate }}
-                    </div>
-                    <div class="text-lg font-bold text-green-600">
-                      {{ car.daily_rate }} ريال/يوم
-                    </div>
-                  </div>
+              <div v-else>
+                <div v-for="car in available_cars" :key="car.id" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <span class="text-sm text-gray-900 dark:text-white">{{ car.name }}</span>
+                  <span class="text-xs text-green-600 dark:text-green-400">متاحة</span>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Monthly Statistics -->
-        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900">إحصائيات الحجوزات الشهرية</h3>
-          </div>
-          <div class="p-6">
-            <div v-if="monthly_bookings.length === 0" class="text-center py-8">
-              <p class="text-gray-500">لا توجد إحصائيات متاحة</p>
-            </div>
-            <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              <div v-for="(stat, index) in monthly_bookings" :key="index" class="text-center p-4 bg-gray-50 rounded-lg">
-                <p class="text-sm text-gray-600 mb-1">{{ stat.month }}</p>
-                <p class="text-2xl font-bold text-blue-600">{{ stat.count }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </AuthenticatedLayout>
+  </AppLayout>
 </template>
 
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { defineProps } from 'vue'
 
 const props = defineProps({
