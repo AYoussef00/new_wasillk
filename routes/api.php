@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\GeneralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ use App\Http\Controllers\SettingsController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// General API Routes
+Route::get('/check-status', [GeneralController::class, 'checkStatus']);
 
 // Car API Routes
 Route::prefix('cars')->group(function () {
