@@ -153,10 +153,16 @@
 
               <!-- Action Buttons -->
               <div class="flex space-x-2 space-x-reverse">
-                <button class="flex-1 bg-blue-600 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors">
+                <button
+                  @click="editCar(car.id)"
+                  class="flex-1 bg-blue-600 text-white px-3 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors"
+                >
                   تعديل
                 </button>
-                <button class="flex-1 bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700 transition-colors">
+                <button
+                  @click="viewCar(car.id)"
+                  class="flex-1 bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
+                >
                   عرض
                 </button>
                 <button
@@ -609,6 +615,14 @@ const handleMainImageUpload = (event) => {
 
 const handleSecondaryImageUpload = (event) => {
   carForm.value.secondary_image = event.target.files[0]
+}
+
+const editCar = (carId) => {
+  router.get(`/dashboard/cars/${carId}/edit`)
+}
+
+const viewCar = (carId) => {
+  router.get(`/cars/${carId}`)
 }
 
 const deleteCar = (carId) => {

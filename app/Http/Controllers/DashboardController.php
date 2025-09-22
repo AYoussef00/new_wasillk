@@ -316,6 +316,134 @@ class DashboardController extends Controller
         }
     }
 
+    public function editCar($id)
+    {
+        $car = Car::findOrFail($id);
+        $categories = Category::all();
+
+        return Inertia::render('Dashboard/EditCar', [
+            'car' => $car,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function updateCar(Request $request, $id)
+    {
+        $car = Car::findOrFail($id);
+
+        $request->validate([
+            'brand_ar' => 'nullable|string|max:255',
+            'model_ar' => 'nullable|string|max:255',
+            'year' => 'nullable|integer|min:2000|max:2030',
+            'color_ar' => 'nullable|string|max:255',
+            'transmission' => 'nullable|string|in:أوتوماتيك,يدوي',
+            'fuel_type' => 'nullable|string|in:بنزين,ديزل,كهربائي,هجين',
+            'seats' => 'nullable|integer|min:2|max:15',
+            'doors' => 'nullable|integer|min:2|max:5',
+            'daily_rate' => 'nullable|numeric|min:0',
+            'weekly_rate' => 'nullable|numeric|min:0',
+            'monthly_rate' => 'nullable|numeric|min:0',
+            'license_plate' => 'nullable|string|max:255|unique:cars,license_plate,' . $id,
+            'description_ar' => 'nullable|string',
+            'features' => 'nullable|string',
+            'status' => 'nullable|in:available,rented,maintenance,unavailable',
+            'is_featured' => 'nullable|in:0,1,true,false',
+            'is_active' => 'nullable|in:0,1,true,false',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'secondary_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle image uploads
+        $images = $car->images ?? [];
+
+        // Main image
+        if ($request->hasFile('main_image')) {
+            // Delete old main image if exists
+            if (isset($images[0])) {
+                $oldImagePath = str_replace('/storage/', '', $images[0]);
+                if (file_exists(storage_path('app/public/' . $oldImagePath))) {
+                    unlink(storage_path('app/public/' . $oldImagePath));
+                }
+            }
+
+            $mainImagePath = $request->file('main_image')->store('cars/main', 'public');
+            $images[0] = '/storage/' . $mainImagePath;
+        }
+
+        // Secondary image
+        if ($request->hasFile('secondary_image')) {
+            // Delete old secondary image if exists
+            if (isset($images[1])) {
+                $oldImagePath = str_replace('/storage/', '', $images[1]);
+                if (file_exists(storage_path('app/public/' . $oldImagePath))) {
+                    unlink(storage_path('app/public/' . $oldImagePath));
+                }
+            }
+
+            $secondaryImagePath = $request->file('secondary_image')->store('cars/secondary', 'public');
+            $images[1] = '/storage/' . $secondaryImagePath;
+        }
+
+        // Parse features JSON
+        $features = [];
+        if ($request->features) {
+            if (is_string($request->features)) {
+                $features = json_decode($request->features, true) ?? [];
+            } else {
+                $features = $request->features;
+            }
+        }
+
+        try {
+            // Simple approach - update all provided fields
+            $carData = $request->only([
+                'brand_ar', 'model_ar', 'year', 'color_ar', 'transmission',
+                'fuel_type', 'seats', 'doors', 'daily_rate', 'weekly_rate',
+                'monthly_rate', 'license_plate', 'description_ar', 'status',
+                'is_featured', 'is_active'
+            ]);
+
+            // Add English versions for Arabic fields
+            if (isset($carData['brand_ar'])) {
+                $carData['brand_en'] = $carData['brand_ar'];
+            }
+            if (isset($carData['model_ar'])) {
+                $carData['model_en'] = $carData['model_ar'];
+            }
+            if (isset($carData['color_ar'])) {
+                $carData['color_en'] = $carData['color_ar'];
+            }
+            if (isset($carData['description_ar'])) {
+                $carData['description_en'] = $carData['description_ar'];
+            }
+
+            // Handle features
+            if ($request->has('features')) {
+                $carData['features'] = $features;
+            }
+
+            // Handle images
+            if ($request->hasFile('main_image') || $request->hasFile('secondary_image')) {
+                $carData['images'] = $images;
+            }
+
+            if (empty($carData)) {
+                return redirect()->back()->with('error', 'لم يتم إرسال أي بيانات للتحديث');
+            }
+
+            $car->update($carData);
+
+            return redirect()->route('dashboard.cars')->with('success', 'تم تحديث السيارة بنجاح');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error updating car:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->with('error', 'حدث خطأ أثناء تحديث السيارة: ' . $e->getMessage());
+        }
+    }
+
     public function destroyCar($id)
     {
         try {
@@ -333,9 +461,11 @@ class DashboardController extends Controller
                 $images = is_string($car->images) ? json_decode($car->images, true) : $car->images;
                 if (is_array($images)) {
                     foreach ($images as $image) {
-                        $imagePath = str_replace('/storage/', '', $image);
-                        if (file_exists(storage_path('app/public/' . $imagePath))) {
-                            unlink(storage_path('app/public/' . $imagePath));
+                        if (is_string($image)) {
+                            $imagePath = str_replace('/storage/', '', $image);
+                            if (file_exists(storage_path('app/public/' . $imagePath))) {
+                                unlink(storage_path('app/public/' . $imagePath));
+                            }
                         }
                     }
                 }

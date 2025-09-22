@@ -52,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
             Route::get('/dashboard/cars', [DashboardController::class, 'cars'])->name('dashboard.cars');
         Route::post('/dashboard/cars', [DashboardController::class, 'storeCar'])->name('dashboard.cars.store');
+        Route::get('/dashboard/cars/{id}/edit', [DashboardController::class, 'editCar'])->name('dashboard.cars.edit');
+        Route::put('/dashboard/cars/{id}', [DashboardController::class, 'updateCar'])->name('dashboard.cars.update');
+        Route::patch('/dashboard/cars/{id}', [DashboardController::class, 'updateCar'])->name('dashboard.cars.update.patch');
+        Route::post('/dashboard/cars/{id}', [DashboardController::class, 'updateCar'])->name('dashboard.cars.update.post');
         Route::delete('/dashboard/cars/{id}', [DashboardController::class, 'destroyCar'])->name('dashboard.cars.destroy');
         Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
         Route::post('/dashboard/bookings/{id}/confirm', [DashboardController::class, 'confirmBooking'])->name('dashboard.bookings.confirm');
