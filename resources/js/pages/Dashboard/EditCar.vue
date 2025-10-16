@@ -54,8 +54,6 @@
         </div>
 
         <form @submit.prevent="submitCarForm" class="space-y-6" enctype="multipart/form-data">
-          <!-- CSRF Token -->
-          <input type="hidden" name="_token" :value="$page.props.csrf_token" />
           <!-- Basic Info -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -434,30 +432,6 @@ const submitCarForm = () => {
     carForm.value.monthly_rate = (parseFloat(carForm.value.daily_rate) * 20).toFixed(2)
   }
 
-  // Create FormData for file upload
-  const formData = new FormData()
-
-  // Add CSRF token and method
-  formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '')
-  formData.append('_method', 'PUT')
-
-  // Add all form fields
-  Object.keys(carForm.value).forEach(key => {
-    if (key === 'features') {
-      formData.append(key, JSON.stringify(carForm.value[key]))
-    } else if (key === 'main_image' || key === 'secondary_image') {
-      if (carForm.value[key]) {
-        formData.append(key, carForm.value[key])
-      }
-    } else if (key === 'is_featured' || key === 'is_active') {
-      // Convert boolean to string for FormData
-      formData.append(key, carForm.value[key] ? '1' : '0')
-    } else {
-      // Always append the value
-      formData.append(key, carForm.value[key])
-    }
-  })
-
   // Check if at least one field is being updated
   const hasUpdates = Object.keys(carForm.value).some(key => {
     if (key === 'main_image' || key === 'secondary_image') {
@@ -481,7 +455,38 @@ const submitCarForm = () => {
     return
   }
 
-  router.post(`/dashboard/cars/${props.car.id}`, formData, {
+  // Prepare data for Inertia (it handles FormData automatically for files)
+  const submitData = {
+    _method: 'PUT',
+    brand_ar: carForm.value.brand_ar,
+    model_ar: carForm.value.model_ar,
+    year: carForm.value.year,
+    color_ar: carForm.value.color_ar,
+    transmission: carForm.value.transmission,
+    fuel_type: carForm.value.fuel_type,
+    seats: carForm.value.seats,
+    doors: carForm.value.doors,
+    daily_rate: carForm.value.daily_rate,
+    weekly_rate: carForm.value.weekly_rate,
+    monthly_rate: carForm.value.monthly_rate,
+    license_plate: carForm.value.license_plate,
+    description_ar: carForm.value.description_ar,
+    features: JSON.stringify(carForm.value.features),
+    status: carForm.value.status,
+    is_featured: carForm.value.is_featured ? '1' : '0',
+    is_active: carForm.value.is_active ? '1' : '0',
+  }
+
+  // Add images only if they are File objects
+  if (carForm.value.main_image instanceof File) {
+    submitData.main_image = carForm.value.main_image
+  }
+  if (carForm.value.secondary_image instanceof File) {
+    submitData.secondary_image = carForm.value.secondary_image
+  }
+
+  router.post(`/dashboard/cars/${props.car.id}`, submitData, {
+    forceFormData: true,
     onSuccess: () => {
       isSubmitting.value = false
       // Redirect to cars list

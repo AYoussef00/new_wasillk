@@ -661,25 +661,6 @@ const submitCarForm = () => {
     carForm.value.monthly_rate = (parseFloat(carForm.value.daily_rate) * 20).toFixed(2)
   }
 
-  // Create FormData for file upload
-  const formData = new FormData()
-
-  // Add all form fields
-  Object.keys(carForm.value).forEach(key => {
-    if (key === 'features') {
-      formData.append(key, JSON.stringify(carForm.value[key]))
-    } else if (key === 'main_image' || key === 'secondary_image') {
-      if (carForm.value[key]) {
-        formData.append(key, carForm.value[key])
-      }
-    } else if (key === 'is_featured' || key === 'is_active') {
-      // Convert boolean to string for FormData
-      formData.append(key, carForm.value[key] ? '1' : '0')
-    } else {
-      formData.append(key, carForm.value[key])
-    }
-  })
-
   // Ensure all required fields are present
   if (!carForm.value.brand_ar) {
     alert('يرجى إدخال الماركة')
@@ -722,30 +703,37 @@ const submitCarForm = () => {
     return
   }
 
-  // Debug: Log form data
-  console.log('Form data being sent:', carForm.value)
-  console.log('FormData entries:')
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value)
+  // Prepare data for Inertia (it handles FormData automatically for files)
+  const submitData = {
+    brand_ar: carForm.value.brand_ar,
+    model_ar: carForm.value.model_ar,
+    year: carForm.value.year,
+    color_ar: carForm.value.color_ar,
+    transmission: carForm.value.transmission,
+    fuel_type: carForm.value.fuel_type,
+    seats: carForm.value.seats,
+    doors: carForm.value.doors,
+    daily_rate: carForm.value.daily_rate,
+    weekly_rate: carForm.value.weekly_rate,
+    monthly_rate: carForm.value.monthly_rate,
+    license_plate: carForm.value.license_plate,
+    description_ar: carForm.value.description_ar,
+    features: JSON.stringify(carForm.value.features),
+    status: carForm.value.status,
+    is_featured: carForm.value.is_featured ? '1' : '0',
+    is_active: carForm.value.is_active ? '1' : '0',
+    main_image: carForm.value.main_image,
   }
 
-  // Log specific required fields
-  console.log('Required fields check:')
-  console.log('brand_ar:', carForm.value.brand_ar)
-  console.log('model_ar:', carForm.value.model_ar)
-  console.log('year:', carForm.value.year)
-  console.log('color_ar:', carForm.value.color_ar)
-  console.log('transmission:', carForm.value.transmission)
-  console.log('fuel_type:', carForm.value.fuel_type)
-  console.log('seats:', carForm.value.seats)
-  console.log('doors:', carForm.value.doors)
-  console.log('daily_rate:', carForm.value.daily_rate)
-  console.log('license_plate:', carForm.value.license_plate)
-  console.log('main_image:', carForm.value.main_image)
-  console.log('is_featured:', carForm.value.is_featured)
-  console.log('is_active:', carForm.value.is_active)
+  // Add secondary image if provided
+  if (carForm.value.secondary_image) {
+    submitData.secondary_image = carForm.value.secondary_image
+  }
 
-  router.post('/dashboard/cars', formData, {
+  console.log('Form data being sent:', submitData)
+
+  router.post('/dashboard/cars', submitData, {
+    forceFormData: true,
     onSuccess: () => {
       console.log('Car added successfully')
       closeAddCarModal()
