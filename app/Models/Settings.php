@@ -34,8 +34,8 @@ class Settings extends Model
         return static::first() ?? static::create([
             'company_name' => 'واصل لك لتأجير السيارات',
             'company_address' => 'الدرعية - طريق الأمير عبدالله بن عبدالرحمن، الرياض، المملكة العربية السعودية',
-            'company_phone' => '+966 55 8588 097',
-            'whatsapp_phone' => '+966 55 8588 097',
+            'company_phone' => '+966558587908',
+            'whatsapp_phone' => '+966558587908',
             'cancellation_policy' => 'يمكن إلغاء الحجز قبل 24 ساعة من تاريخ الاستلام',
             'insurance_info' => 'جميع السيارات مؤمنة بالكامل',
             'rental_terms' => 'يجب أن يكون عمر المستأجر 21 سنة أو أكثر',

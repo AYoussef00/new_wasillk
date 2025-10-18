@@ -381,7 +381,7 @@ const duration = computed(() => {
   const end = new Date(form.return_date)
   const diffTime = Math.abs(end - start)
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  return diffDays + 1
+  return diffDays || 1 // على الأقل يوم واحد
 })
 
 const totalAmount = computed(() => {

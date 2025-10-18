@@ -22,7 +22,7 @@ class BookingController extends Controller
             // حساب المدة والمبلغ الإجمالي
             $pickupDate = \Carbon\Carbon::parse($request->pickup_date);
             $returnDate = \Carbon\Carbon::parse($request->return_date);
-            $duration = $pickupDate->diffInDays($returnDate) + 1;
+            $duration = max(1, $pickupDate->diffInDays($returnDate)); // على الأقل يوم واحد
 
             $totalAmount = $car->daily_rate * $duration;
 

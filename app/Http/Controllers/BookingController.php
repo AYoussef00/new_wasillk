@@ -42,7 +42,7 @@ class BookingController extends Controller
         // حساب المدة والمبلغ الإجمالي
         $pickupDate = \Carbon\Carbon::parse($request->pickup_date);
         $returnDate = \Carbon\Carbon::parse($request->return_date);
-        $duration = $pickupDate->diffInDays($returnDate) + 1;
+        $duration = max(1, $pickupDate->diffInDays($returnDate)); // على الأقل يوم واحد
 
         $totalAmount = $car->daily_rate * $duration;
 
@@ -72,9 +72,13 @@ class BookingController extends Controller
 
     public function show(Booking $booking)
     {
-        // التأكد من أن المستخدم يملك هذا الحجز أو أنه زائر
+        // التأكد من أن المستخدم يملك هذا الحجز أو أنه زائر أو أنه مدير
         if (Auth::check() && $booking->user_id !== Auth::id()) {
-            abort(403);
+            // السماح للمديرين برؤية جميع الحجوزات
+            $user = Auth::user();
+            if ($user->email !== 'info@wasillk.com') {
+                abort(403);
+            }
         }
 
         $booking->load('car.category');

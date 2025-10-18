@@ -604,8 +604,8 @@ const insuranceInfo = ref('')
 const cancellationPolicy = ref('')
 const rentalTerms = ref('')
 const contactInfo = ref({
-  phone: '+966 55 8588 097',
-  whatsapp: '+966 55 8588 097'
+  phone: '+966558587908',
+  whatsapp: '+966558587908'
 })
 
 const tabs = [
@@ -637,15 +637,15 @@ const fetchContactInfo = async () => {
     const data = await response.json()
     if (data.success) {
       contactInfo.value = {
-        phone: data.data.phone || '+966 55 8588 097',
-        whatsapp: data.data.whatsapp || '+966 55 8588 097'
+        phone: data.data.phone || '+966558587908',
+        whatsapp: data.data.whatsapp || '+966558587908'
       }
     }
   } catch (error) {
     console.error('Error fetching contact info:', error)
     contactInfo.value = {
-      phone: '+966 55 8588 097',
-      whatsapp: '+966 55 8588 097'
+      phone: '+966558587908',
+      whatsapp: '+966558587908'
     }
   }
 }

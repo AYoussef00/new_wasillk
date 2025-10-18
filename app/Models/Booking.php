@@ -40,7 +40,7 @@ class Booking extends Model
 
     public function getDurationAttribute()
     {
-        return $this->pickup_date->diffInDays($this->return_date) + 1;
+        return max(1, $this->pickup_date->diffInDays($this->return_date)); // على الأقل يوم واحد
     }
 
     public function getStatusTextAttribute()

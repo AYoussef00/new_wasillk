@@ -142,8 +142,8 @@ class SettingsController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'phone' => $settings->company_phone ?? '+966 55 8588 097',
-                'whatsapp' => $settings->whatsapp_phone ?? '+966 55 8588 097',
+                'phone' => $settings->company_phone ?? '+966558587908',
+                'whatsapp' => $settings->whatsapp_phone ?? '+966558587908',
                 'email' => 'info@wasillk.com', // يمكن إضافة هذا الحقل لاحقاً
                 'address' => $settings->company_address ?? 'الدرعية - طريق الأمير عبدالله بن عبدالرحمن، الرياض، المملكة العربية السعودية',
                 'google_maps_link' => $settings->google_maps_link ?? 'https://maps.app.goo.gl/J1FPhWPzNBLq8qXC9?g_st=iw',

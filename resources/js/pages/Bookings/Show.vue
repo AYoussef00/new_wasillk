@@ -133,7 +133,7 @@
                 إلغاء الحجز
               </button>
               <Link
-                :href="route('bookings.index')"
+                :href="route('dashboard.bookings')"
                 class="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300 text-center"
               >
                 العودة للحجوزات

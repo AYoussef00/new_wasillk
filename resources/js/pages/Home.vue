@@ -486,7 +486,7 @@
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <!-- WhatsApp Button -->
           <a
-            href="https://wa.me/966501234567?text=مرحبا، أريد الاستفسار عن خدمات تأجير السيارات"
+            href="https://wa.me/966558587908?text=مرحبا، أريد الاستفسار عن خدمات تأجير السيارات"
             target="_blank"
             class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 flex items-center justify-center space-x-2 space-x-reverse"
           >

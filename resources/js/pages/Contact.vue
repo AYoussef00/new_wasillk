@@ -374,8 +374,8 @@ const form = useForm({
 
 // Contact info from API
 const contactInfo = ref({
-  phone: '+966 55 8588 097',
-  whatsapp: '+966 55 8588 097',
+  phone: '+966558587908',
+  whatsapp: '+966558587908',
   email: 'info@wasillk.com',
   address: 'الدرعية - طريق الأمير عبدالله بن عبدالرحمن، الرياض، المملكة العربية السعودية',
   google_maps_link: 'https://maps.app.goo.gl/J1FPhWPzNBLq8qXC9?g_st=iw'
