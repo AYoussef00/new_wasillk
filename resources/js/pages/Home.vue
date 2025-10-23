@@ -74,20 +74,6 @@
           <p class="text-xl md:text-2xl mb-8 text-blue-100">
             السيارة توصلك… من واصل لك
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/cars"
-              class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300"
-            >
-              استعرض السيارات
-            </Link>
-            <Link
-              href="/cars/featured"
-              class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300"
-            >
-              السيارات المميزة
-            </Link>
-          </div>
         </div>
       </div>
     </section>
@@ -270,14 +256,6 @@
             </div>
           </div>
         </div>
-        <div class="text-center mt-12">
-          <Link
-            href="/cars"
-            class="bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-900 transition duration-300"
-          >
-            عرض جميع السيارات
-          </Link>
-        </div>
       </div>
     </section>
 
@@ -294,9 +272,6 @@
             <div class="relative z-10">
               <h3 class="text-2xl font-bold mb-4">خصم 20%</h3>
               <p class="text-red-100 mb-6">للحجوزات الأسبوعية</p>
-              <Link href="/cars" class="bg-white text-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 inline-block">
-                احجز الآن
-              </Link>
             </div>
           </div>
 
@@ -305,9 +280,6 @@
             <div class="relative z-10">
               <h3 class="text-2xl font-bold mb-4">خصم 30%</h3>
               <p class="text-blue-100 mb-6">للحجوزات الشهرية</p>
-              <Link href="/cars" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 inline-block">
-                احجز الآن
-              </Link>
             </div>
           </div>
 
@@ -316,9 +288,6 @@
             <div class="relative z-10">
               <h3 class="text-2xl font-bold mb-4">عرض الطلاب</h3>
               <p class="text-green-100 mb-6">خصم 15% للطلاب</p>
-              <Link href="/cars" class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 inline-block">
-                احجز الآن
-              </Link>
             </div>
           </div>
         </div>
