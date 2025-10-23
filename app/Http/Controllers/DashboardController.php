@@ -81,10 +81,11 @@ class DashboardController extends Controller
 
     public function cars()
     {
-        $cars = Car::with('category')
+        $cars = Car::with(['category', 'bookings'])
             ->latest()
             ->get()
             ->map(function ($car) {
+                $bookingCount = $car->bookings->count();
                 return [
                     'id' => $car->id,
                     'name' => ($car->brand_ar ?? 'تويوتا') . ' ' . ($car->model_ar ?? 'كورولا'),
@@ -100,6 +101,8 @@ class DashboardController extends Controller
                     'fuel_type' => $car->fuel_type,
                     'seats' => $car->seats,
                     'created_at' => $car->created_at->format('Y-m-d'),
+                    'booking_count' => $bookingCount,
+                    'has_bookings' => $bookingCount > 0,
                 ];
             });
 
@@ -446,19 +449,33 @@ class DashboardController extends Controller
 
     public function destroyCar($id)
     {
+        \Illuminate\Support\Facades\Log::info('Destroy car method called with ID:', ['id' => $id]);
+
         try {
             $car = Car::findOrFail($id);
+            \Illuminate\Support\Facades\Log::info('Car found:', ['car' => $car->toArray()]);
 
             // Check if car has any bookings
             $hasBookings = Booking::where('car_id', $id)->exists();
+            \Illuminate\Support\Facades\Log::info('Has bookings check:', ['has_bookings' => $hasBookings]);
 
+            // Delete associated bookings first
             if ($hasBookings) {
-                return redirect()->back()->with('error', 'لا يمكن حذف هذه السيارة لأنها مرتبطة بحجوزات موجودة.');
+                \Illuminate\Support\Facades\Log::info('Car has bookings, deleting them first');
+                $deletedBookings = Booking::where('car_id', $id)->delete();
+                \Illuminate\Support\Facades\Log::info('Deleted bookings count:', ['count' => $deletedBookings]);
             }
 
             // Delete car images from storage
             if ($car->images) {
-                $images = is_string($car->images) ? json_decode($car->images, true) : $car->images;
+                if (is_string($car->images)) {
+                    $decoded = json_decode($car->images, true);
+                    $images = is_array($decoded) ? $decoded : [];
+                } elseif (is_array($car->images)) {
+                    $images = $car->images;
+                } else {
+                    $images = [];
+                }
                 if (is_array($images)) {
                     foreach ($images as $image) {
                         if (is_string($image)) {
@@ -472,8 +489,13 @@ class DashboardController extends Controller
             }
 
             $car->delete();
+            \Illuminate\Support\Facades\Log::info('Car deleted successfully');
 
-            return redirect()->back()->with('success', 'تم حذف السيارة بنجاح.');
+            $successMessage = $hasBookings
+                ? 'تم حذف السيارة وجميع الحجوزات المرتبطة بها بنجاح.'
+                : 'تم حذف السيارة بنجاح.';
+
+            return redirect()->back()->with('success', $successMessage);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error deleting car:', [
                 'message' => $e->getMessage(),

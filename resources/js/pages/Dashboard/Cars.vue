@@ -107,7 +107,12 @@
           <!-- Car Info -->
           <div class="p-6">
             <div class="flex justify-between items-start mb-3">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ car.name }}</h3>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ car.name }}</h3>
+                <span v-if="car.has_bookings" class="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs px-2 py-1 rounded-full">
+                  {{ car.booking_count }} حجز
+                </span>
+              </div>
               <div class="flex space-x-1 space-x-reverse">
                 <span v-if="car.is_featured" class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-1 rounded-full">مميزة</span>
                 <span :class="getStatusClass(car.status)" class="text-xs px-2 py-1 rounded-full">
@@ -167,8 +172,8 @@
                 </button>
                 <button
                   @click="deleteCar(car.id)"
-                  class="bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700 transition-colors"
-                  title="حذف السيارة"
+                  class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+                  :title="car.has_bookings ? `حذف السيارة (${car.booking_count} حجز) - سيتم حذف الحجوزات أيضاً` : 'حذف السيارة'"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -626,10 +631,40 @@ const viewCar = (carId) => {
 }
 
 const deleteCar = (carId) => {
-  if (confirm('هل أنت متأكد من حذف هذه السيارة؟ لا يمكن التراجع عن هذا الإجراء.')) {
+  console.log('Delete button clicked for car ID:', carId)
+  console.log('Available cars:', props.cars)
+
+  // Test if function is called
+  alert('دالة الحذف تعمل! سيتم حذف السيارة رقم: ' + carId)
+
+  // Find the car to check if it has bookings
+  const car = props.cars.find(c => c.id === carId)
+  console.log('Found car:', car)
+
+  // Show appropriate confirmation dialog based on bookings
+  let confirmMessage
+  if (car && car.has_bookings) {
+    confirmMessage = `⚠️ تحذير: هذه السيارة مرتبطة بـ ${car.booking_count} حجز.
+
+هل أنت متأكد من حذف هذه السيارة؟
+سيتم حذف السيارة وجميع الحجوزات المرتبطة بها نهائياً.
+
+لا يمكن التراجع عن هذا الإجراء!`
+  } else {
+    confirmMessage = `هل أنت متأكد من حذف هذه السيارة؟
+لا يمكن التراجع عن هذا الإجراء.`
+  }
+
+  if (confirm(confirmMessage)) {
+    console.log('User confirmed deletion, sending DELETE request to:', `/dashboard/cars/${carId}`)
     router.delete(`/dashboard/cars/${carId}`, {
-      onSuccess: () => {
-        console.log('Car deleted successfully')
+      onStart: () => {
+        console.log('Delete request started')
+      },
+      onSuccess: (page) => {
+        console.log('Car deleted successfully', page)
+        // Show success message
+        alert('تم حذف السيارة بنجاح!')
         // Refresh the page to show updated cars list
         window.location.reload()
       },
@@ -643,7 +678,11 @@ const deleteCar = (carId) => {
         } else {
           errorMessage += errors
         }
-        alert(errorMessage)
+        // Show error in a more prominent way
+        alert('❌ ' + errorMessage)
+      },
+      onFinish: () => {
+        console.log('Delete request finished')
       }
     })
   }

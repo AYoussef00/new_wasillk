@@ -456,11 +456,11 @@
               <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span class="text-gray-500">من:</span>
-                  <p class="font-medium">{{ selectedCustomer.pickup_date }}</p>
+                  <p class="font-medium">{{ formatDateForModal(selectedCustomer.pickup_date) }}</p>
                 </div>
                 <div>
                   <span class="text-gray-500">إلى:</span>
-                  <p class="font-medium">{{ selectedCustomer.return_date }}</p>
+                  <p class="font-medium">{{ formatDateForModal(selectedCustomer.return_date) }}</p>
                 </div>
                 <div>
                   <span class="text-gray-500">المبلغ:</span>
@@ -586,10 +586,21 @@ const isThisMonth = (dateString) => {
 const formatDate = (dateString) => {
   if (!dateString) return ''
   const date = new Date(dateString)
-  return date.toLocaleDateString('ar-SA', {
+  return date.toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+    month: '2-digit',
+    day: '2-digit'
+  })
+}
+
+// دالة لتنسيق التواريخ في modal العميل
+const formatDateForModal = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
   })
 }
 
