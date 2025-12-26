@@ -4,11 +4,13 @@
       <div class="flex justify-between items-center h-16">
         <!-- Logo - على اليسار -->
         <div class="flex items-center">
-          <img
-            src="/images/logo/company-logo.png"
-            alt="واصل لك لتأجير السيارات"
-            class="h-24 w-auto object-contain"
-          />
+          <Link href="/" class="cursor-pointer">
+            <img
+              src="/images/logo/company-logo.png"
+              alt="واصل لك لتأجير السيارات"
+              class="h-24 w-auto object-contain"
+            />
+          </Link>
         </div>
 
         <!-- Navigation Menu - على اليمين -->

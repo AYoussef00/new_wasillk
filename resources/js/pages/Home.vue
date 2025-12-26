@@ -447,6 +447,38 @@
       </div>
     </section>
 
+    <!-- Download App Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">حمل تطبيقنا</h2>
+          <p class="text-lg text-gray-600">احصل على تطبيقنا وتمتع بتجربة أفضل</p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 justify-center items-center max-w-2xl mx-auto">
+          <!-- Android -->
+          <a href="https://play.google.com/store/apps/details?id=edx.wasillk.com&hl=en" target="_blank" rel="noopener noreferrer" class="flex items-center bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-xl p-4 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full md:w-auto min-w-[280px]">
+            <svg class="w-14 h-14 ml-4 flex-shrink-0" viewBox="0 0 24 24" fill="white">
+              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L16.19,16.19L14.54,14.54L17.78,11.31L14.54,8.08L16.19,6.43L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+            </svg>
+            <div class="flex-1 text-right">
+              <div class="text-xs text-green-100 opacity-90">احصل عليه من</div>
+              <div class="text-lg font-bold text-white">Google Play</div>
+            </div>
+          </a>
+          <!-- iOS -->
+          <a href="https://apps.apple.com/gb/app/wasillk-car/id6748010446" target="_blank" rel="noopener noreferrer" class="flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl p-4 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full md:w-auto min-w-[280px]">
+            <svg class="w-14 h-14 ml-4 flex-shrink-0" viewBox="0 0 24 24" fill="white">
+              <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+            </svg>
+            <div class="flex-1 text-right">
+              <div class="text-xs text-blue-100 opacity-90">احصل عليه من</div>
+              <div class="text-lg font-bold text-white">App Store</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact CTA Section -->
     <section class="py-16 bg-gray-900 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

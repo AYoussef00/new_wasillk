@@ -33,8 +33,9 @@
 
         <title inertia>{{ config('app.name', 'واصل لك لتأجير السيارات') }}</title>
 
+        <link rel="icon" type="image/png" href="/images/logo/company-logo.png">
+        <link rel="icon" type="image/png" href="/favicon.png">
         <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
